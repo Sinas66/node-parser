@@ -53,7 +53,9 @@ const parse = async ({
 
   const browser = await puppeteer.launch({
     headless: headless,
-    args: [`--window-size=${puppeteerOptions.width},${puppeteerOptions.height}`] // new option
+    args: [
+      `--window-size=${puppeteerOptions.width},${puppeteerOptions.height} --no-sandbox`
+    ] // new option
   });
   const page = await browser.newPage();
 
@@ -70,7 +72,7 @@ const parse = async ({
 
   await page.screenshot({ path: "example.png" });
 
-  // await page.waitForXPath(waitXPath || xPath);
+  await page.waitForXPath(waitXPath || xPath);
 
   const elHandle = await page.$x(xPath);
 
