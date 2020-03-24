@@ -67,7 +67,8 @@ const parse = async ({
 
   await page.goto(url);
 
-  // await page.screenshot({ path: "example.png" });
+  await page.screenshot({ path: "example.png" });
+
   await page.waitForXPath(waitXPath || xPath);
 
   const elHandle = await page.$x(xPath);

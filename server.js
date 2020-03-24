@@ -1,4 +1,6 @@
 const app = require("express")();
+const fs = require("fs");
+const path = require("path");
 
 const parseCountries = require("./countries");
 const TelegramBot = require("node-telegram-bot-api");
@@ -8,9 +10,18 @@ const bot = new TelegramBot(token, { polling: true });
 
 bot.on("message", async msg => {
   const chatId = msg.chat.id;
-  const data = await parseCountries();
+  // const data = await parseCountries();
   // send a message to the chat acknowledging receipt of their message
-  bot.sendMessage(chatId, JSON.stringify(data));
+  // bot.sendMessage(chatId, JSON.stringify(data));
+  const filePath = path.resolve(__dirname, "./example.png");
+
+  fs.readFile(filePath, (err, doc) => {
+    if (err) {
+      bot.sendMessage(chatId, JSON.stringify(err));
+      return;
+    }
+    bot.sendPhoto(chatId, doc);
+  });
 });
 
 app.use("/", async (req, res) => {
