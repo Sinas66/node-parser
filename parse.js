@@ -60,6 +60,10 @@ const parse = async ({
   });
   const page = await browser.newPage();
 
+  await page.setUserAgent(
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) snap Chromium/80.0.3987.149 Chrome/80.0.3987.149 Safari/537.36"
+  );
+
   await page.setViewport({
     width: puppeteerOptions.width,
     height: puppeteerOptions.height
