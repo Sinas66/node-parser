@@ -3,9 +3,8 @@ const parse = require("./parse");
 const options = {
   // headless: false,
   url: "https://rozetka.com.ua/men_shoes/c721654/",
-  xPath: `//*[@id="sort_strana-proizvoditelj-tovara-90098"]`,
-  selector: "#sort_strana-proizvoditelj-tovara-90098",
-  waitXPath: `//*[@id="filter_parameters_form"]`,
+  xPath: `/html/body/div[4]/div/div[2]/div[2]/div/div/div/form/div[17]/div[2]/ul`,
+  // selector: "#sort_strana-proizvoditelj-tovara-90098",
   schema: el => ({ label: el }),
   fileName: "countries",
   format: data => {
