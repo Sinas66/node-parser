@@ -49,7 +49,7 @@ const parse = async ({
     }
   }
 
-  const puppeteerOptions = { width: 1900, height: 1000 };
+  const puppeteerOptions = { width: 1920, height: 1080 };
 
   const browser = await puppeteer.launch({
     headless: headless,
@@ -68,9 +68,12 @@ const parse = async ({
     width: puppeteerOptions.width,
     height: puppeteerOptions.height
   });
+  const navigationPromise = page.waitForNavigation({
+    waitUntil: "domcontentloaded"
+  });
 
   await page.goto(url);
-
+  await navigationPromise();
   await page.screenshot({ path: "example.png" });
 
   await page.waitForXPath(waitXPath || xPath);
