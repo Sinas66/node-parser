@@ -78,6 +78,9 @@ const parse = async ({
 
   await page.waitForXPath(waitXPath || xPath);
 
+  const test = await page.evaluate(() => document.querySelector("body"));
+
+  return test.innerHTML;
   const elHandle = await page.$x(xPath);
 
   let parsedContent = await page.evaluate(
