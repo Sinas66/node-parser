@@ -14,12 +14,12 @@ bot.on("message", async msg => {
   // send a message to the chat acknowledging receipt of their message
   // bot.sendMessage(chatId, JSON.stringify(data));
   const filePath = path.resolve(__dirname, "./example.png");
+  const data = await parseCountries();
+  bot.sendMessage(chatId, JSON.stringify(data));
 
   fs.readFile(filePath, (err, doc) => {
-      const data = await parseCountries();
     // send a message to the chat acknowledging receipt of their message
-    bot.sendMessage(chatId, JSON.stringify(data));
-    
+
     if (err) {
       bot.sendMessage(chatId, JSON.stringify(err));
       return;
