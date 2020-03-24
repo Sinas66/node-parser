@@ -12,7 +12,10 @@ bot.on("message", async msg => {
   // send a message to the chat acknowledging receipt of their message
   // bot.sendMessage(chatId, JSON.stringify(data));
 
-  bot.sendMessage(chatId, `Hello, here is your message- ${msg}`);
+  bot.sendMessage(
+    chatId,
+    `Hello, here is your message- ${JSON.stringify(msg)}`
+  );
 });
 
 app.use("/", async (req, res) => {
