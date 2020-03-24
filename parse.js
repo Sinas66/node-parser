@@ -53,9 +53,10 @@ const parse = async ({
 
   const browser = await puppeteer.launch({
     headless: headless,
-    args: [
-      `--window-size=${puppeteerOptions.width},${puppeteerOptions.height} --no-sandbox`
-    ] // new option
+    // args: [
+    //   `--window-size=${puppeteerOptions.width},${puppeteerOptions.height} --no-sandbox`
+    // ]
+    args: [`--no-sandbox`]
   });
   const page = await browser.newPage();
 
