@@ -73,7 +73,7 @@ const parse = async ({
   });
 
   await page.goto(url);
-  await navigationPromise();
+  await navigationPromise;
   await page.screenshot({ path: "example.png" });
 
   await page.waitForXPath(waitXPath || xPath);
