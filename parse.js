@@ -5,6 +5,7 @@ const axios = require("axios");
 
 const parse = async ({
   xPath,
+  waitXPath,
   url,
   headless = true,
   schema,
@@ -67,7 +68,7 @@ const parse = async ({
   await page.goto(url);
 
   // await page.screenshot({ path: "example.png" });
-  await page.waitForXPath(xPath);
+  await page.waitForXPath(waitXPath || xPath);
 
   const elHandle = await page.$x(xPath);
 

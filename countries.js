@@ -4,6 +4,7 @@ const options = {
   // headless: false,
   url: "https://rozetka.com.ua/men_shoes/c721654/",
   xPath: `//*[@id="sort_strana-proizvoditelj-tovara-90098"]`,
+  waitXPath: '//*[@id="filter_parameters_form"]/div[17]',
   schema: el => ({ label: el }),
   fileName: "countries",
   format: data => {
