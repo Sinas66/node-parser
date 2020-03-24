@@ -1,4 +1,6 @@
 const app = require("express")();
+const { promises } = require("fs");
+const path = require("path");
 
 const parseCountries = require("./countries");
 const TelegramBot = require("node-telegram-bot-api");
@@ -11,7 +13,10 @@ bot.on("message", async msg => {
   const data = await parseCountries();
   // send a message to the chat acknowledging receipt of their message
   bot.sendMessage(chatId, JSON.stringify(data));
+  const filePath = path.resolve(__dirname, "./example.png");
 
+  const screenshot = await promises.readFile(filePath);
+  bot.sendPhoto(chatId, screenshot);
   bot.sendMessage(
     chatId,
     `Hello, here is your message- ${msg.from.first_name}`
