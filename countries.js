@@ -9,6 +9,7 @@ const options = {
   schema: el => ({ label: el }),
   fileName: "countries",
   format: data => {
+    console.log("data", data);
     return data
       .split(")")
       .map(el => {
