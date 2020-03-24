@@ -68,19 +68,12 @@ const parse = async ({
     width: puppeteerOptions.width,
     height: puppeteerOptions.height
   });
-  const navigationPromise = page.waitForNavigation({
-    waitUntil: "domcontentloaded"
-  });
 
-  await page.goto(url);
-  await navigationPromise;
+  await page.goto(url, { waitUntil: "domcontentloaded" });
   await page.screenshot({ path: "example.png" });
 
   await page.waitForXPath(waitXPath || xPath);
 
-  const test = await page.evaluate(() => document.querySelector("body"));
-
-  return test.innerHTML;
   const elHandle = await page.$x(xPath);
 
   let parsedContent = await page.evaluate(
