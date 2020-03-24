@@ -52,7 +52,7 @@ const parse = async ({
   const puppeteerOptions = { width: 1920, height: 1080 };
 
   const browser = await puppeteer.launch({
-    product: "firefox",
+    // product: "firefox",
     headless: headless,
     // product: "firefox",
     defaultViewport: {
