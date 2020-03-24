@@ -72,16 +72,16 @@ const parse = async ({
   await page.goto(url, { waitUntil: "domcontentloaded" });
   await page.screenshot({ path: "example.png" });
 
-  await page.waitForXPath(waitXPath || xPath);
+  // await page.waitForXPath(waitXPath || xPath);
 
-  const elHandle = await page.$x(xPath);
+  // const elHandle = await page.$x(xPath);
 
   let parsedContent = await page.evaluate(
-    (el, sel) =>
+    sel =>
       sel
-        ? Array.from(el.querySelectorAll(sel)).map(el => el.htmlFor)
-        : el.textContent,
-    elHandle[0],
+        ? Array.from(document.querySelectorAll(sel)).map(el => el.htmlFor)
+        : document.textContent,
+
     selector
   );
 

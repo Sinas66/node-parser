@@ -1,9 +1,10 @@
 const parse = require("./parse");
 
 const options = {
-  headless: false,
+  // headless: false,
   url: "https://rozetka.com.ua/men_shoes/c721654/",
   xPath: `//*[@id="sort_strana-proizvoditelj-tovara-90098"]`,
+  selector: "#sort_strana-proizvoditelj-tovara-90098",
   waitXPath: `//*[@id="filter_parameters_form"]`,
   schema: el => ({ label: el }),
   fileName: "countries",
