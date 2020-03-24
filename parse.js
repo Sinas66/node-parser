@@ -68,79 +68,81 @@ const parse = async ({
     width: puppeteerOptions.width,
     height: puppeteerOptions.height
   });
+  try {
+    await page.goto(url, { waitUntil: "domcontentloaded" });
+    await page.screenshot({ path: "example.png" });
 
-  await page.goto(url, { waitUntil: "domcontentloaded", timeout: 0 });
-  await page.screenshot({ path: "example.png" });
+    await page.waitForXPath(waitXPath || xPath);
 
-  await page.waitForXPath(waitXPath || xPath);
+    const elHandle = await page.$x(xPath);
 
-  const elHandle = await page.$x(xPath);
-
-  let parsedContent = await page.evaluate(
-    (el, sel) =>
-      sel
-        ? Array.from(el.querySelectorAll(sel)).map(el => el.htmlFor)
-        : el.textContent,
-    elHandle[0],
-    selector
-  );
-
-  const formatedContent = format ? format(parsedContent) : parsedContent;
-
-  const uniqueContent = new Array(...new Set(formatedContent)).map(el =>
-    schema(el)
-  );
-
-  //   console.log("uniqueData", uniqueContent);
-  console.log("uniqueData", uniqueContent.length);
-  const someData = [];
-
-  let scenarioResult;
-  if (scenario) {
-    scenarioResult = await scenario(page, browser);
-  }
-
-  if (fileName) {
-    const filePath = path.resolve(__dirname, "parsed", fileName + ".json");
-
-    fs.writeFile(
-      filePath,
-      JSON.stringify(scenarioResult || uniqueContent),
-      err => {
-        if (err) throw err;
-        console.log(`The file has been saved! Filename: ${fileName}`);
-      }
+    let parsedContent = await page.evaluate(
+      (el, sel) =>
+        sel
+          ? Array.from(el.querySelectorAll(sel)).map(el => el.htmlFor)
+          : el.textContent,
+      elHandle[0],
+      selector
     );
-  }
 
-  if (Object.keys(axiosOptions).length > 0) {
-    const { schema, ...restOptions } = axiosOptions;
+    const formatedContent = format ? format(parsedContent) : parsedContent;
 
-    const errors = [];
-    const saved = [];
-    const sendData = async () => {
-      return await asyncForEach(uniqueContent, async el => {
-        // console.log("el", el);
-        if (!el) return;
-        const jsonData = schema(el);
+    const uniqueContent = new Array(...new Set(formatedContent)).map(el =>
+      schema(el)
+    );
 
-        return await axios({ ...restOptions, data: jsonData })
-          .then(() => saved.push(el))
-          .catch(err => errors.push(err.response.data.message));
+    //   console.log("uniqueData", uniqueContent);
+    console.log("uniqueData", uniqueContent.length);
+    const someData = [];
+
+    let scenarioResult;
+    if (scenario) {
+      scenarioResult = await scenario(page, browser);
+    }
+
+    if (fileName) {
+      const filePath = path.resolve(__dirname, "parsed", fileName + ".json");
+
+      fs.writeFile(
+        filePath,
+        JSON.stringify(scenarioResult || uniqueContent),
+        err => {
+          if (err) throw err;
+          console.log(`The file has been saved! Filename: ${fileName}`);
+        }
+      );
+    }
+
+    if (Object.keys(axiosOptions).length > 0) {
+      const { schema, ...restOptions } = axiosOptions;
+
+      const errors = [];
+      const saved = [];
+      const sendData = async () => {
+        return await asyncForEach(uniqueContent, async el => {
+          // console.log("el", el);
+          if (!el) return;
+          const jsonData = schema(el);
+
+          return await axios({ ...restOptions, data: jsonData })
+            .then(() => saved.push(el))
+            .catch(err => errors.push(err.response.data.message));
+        });
+      };
+
+      sendData().then(() => {
+        console.log("saved", saved);
+        console.log("errors", errors);
       });
-    };
+    }
 
-    sendData().then(() => {
-      console.log("saved", saved);
-      console.log("errors", errors);
-    });
+    console.log("uniqueContent", uniqueContent);
+
+    return scenarioResult || uniqueContent;
+    await browser.close();
+  } catch (e) {
+    return e;
   }
-
-  await browser.close();
-
-  console.log("uniqueContent", uniqueContent);
-
-  return scenarioResult || uniqueContent;
 };
 
 module.exports = parse;
