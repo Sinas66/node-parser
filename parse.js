@@ -53,6 +53,11 @@ const parse = async ({
 
   const browser = await puppeteer.launch({
     headless: headless,
+    // product: "firefox",
+    defaultViewport: {
+      width: puppeteerOptions.width,
+      height: puppeteerOptions.height
+    },
     // args: [
     //   `--window-size=${puppeteerOptions.width},${puppeteerOptions.height} --no-sandbox`
     // ]
@@ -64,10 +69,11 @@ const parse = async ({
     "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) snap Chromium/80.0.3987.149 Chrome/80.0.3987.149 Safari/537.36"
   );
 
-  await page.setViewport({
-    width: puppeteerOptions.width,
-    height: puppeteerOptions.height
-  });
+  // await page.setViewport({
+  //   width: puppeteerOptions.width,
+  //   height: puppeteerOptions.height
+  // });
+
   try {
     await page.goto(url, { waitUntil: "domcontentloaded" });
     await page.screenshot({ path: "example.png" });
